@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.data.annotation.Id;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class UserDTO {
@@ -29,8 +30,7 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(UUID id, String username, String password, String fullName, String email, String phoneNo, String country, String city) {
-        this.id = id;
+    public UserDTO(String username, String password, String fullName, String email, String phoneNo, String country, String city) {
         this.username = username;
         this.password = password;
         this.fullName = fullName;
@@ -102,5 +102,18 @@ public class UserDTO {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDTO userDTO = (UserDTO) o;
+        return Objects.equals(id, userDTO.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

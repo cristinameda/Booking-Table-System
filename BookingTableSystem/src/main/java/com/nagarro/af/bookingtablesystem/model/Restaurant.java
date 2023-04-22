@@ -43,7 +43,7 @@ public class Restaurant {
             joinColumns = {@JoinColumn(name = "restaurant_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "restaurant_capacity_id", referencedColumnName = "id")})
     @MapKeyTemporal(TemporalType.DATE)
-    private Map<Date, RestaurantCapacity> dateCapacityAvailability;
+    private Map<Date, RestaurantCapacity> dateCapacityAvailability = new HashMap<>();
 
     public Restaurant() {
     }
@@ -61,7 +61,20 @@ public class Restaurant {
         this.maxCustomersNo = maxCustomersNo;
         this.maxTablesNo = maxTablesNo;
         this.restaurantManager = restaurantManager;
-        this.dateCapacityAvailability = new HashMap<>();
+    }
+
+    public Restaurant(String name, String email, String phoneNo, String country, String city, String address,
+                      String description, Menu menu, int maxCustomersNo, int maxTablesNo) {
+        this.name = name;
+        this.email = email;
+        this.phoneNo = phoneNo;
+        this.country = country;
+        this.city = city;
+        this.address = address;
+        this.description = description;
+        this.menu = menu;
+        this.maxCustomersNo = maxCustomersNo;
+        this.maxTablesNo = maxTablesNo;
     }
 
     public UUID getId() {
@@ -195,7 +208,7 @@ public class Restaurant {
                 ", menu=" + menu +
                 ", maxCustomersNo=" + maxCustomersNo +
                 ", maxTablesNo=" + maxTablesNo +
-                ", dateCapacityAvailability=" + dateCapacityAvailability +
+                ", restaurantManager=" + restaurantManager +
                 '}';
     }
 }

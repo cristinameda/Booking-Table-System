@@ -8,6 +8,7 @@ import com.nagarro.af.bookingtablesystem.model.RestaurantManager;
 import com.nagarro.af.bookingtablesystem.repository.RestaurantRepository;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -22,31 +23,21 @@ public class RestaurantManagerMapper implements EntityDTOMapper<RestaurantManage
 
     private final RestaurantRepository restaurantRepository;
 
-    public RestaurantManagerMapper(ModelMapper modelMapper, RestaurantRepository restaurantRepository) {
-        this.modelMapper = modelMapper;
+    public RestaurantManagerMapper(RestaurantRepository restaurantRepository) {
+        this.modelMapper = new ModelMapper();
+        configureMapper();
         this.restaurantRepository = restaurantRepository;
     }
 
-    public RestaurantManagerDTO mapEntityToDTO(RestaurantManager restaurantManager) {
+    private void configureMapper() {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
         Converter<List<Restaurant>, List<UUID>> restaurantsListToIdsListConverter =
                 ctx -> ctx.getSource()
                         .stream()
                         .map(Restaurant::getId)
                         .collect(Collectors.toList());
 
-        modelMapper.createTypeMap(RestaurantManager.class, RestaurantManagerDTO.class)
-                .addMappings(map -> map
-                        .using(restaurantsListToIdsListConverter)
-                        .map(
-                                RestaurantManager::getRestaurants,
-                                RestaurantManagerDTO::setRestaurantIds
-                        )
-                );
-        return modelMapper.map(restaurantManager, RestaurantManagerDTO.class);
-    }
-
-    @Override
-    public RestaurantManager mapDTOtoEntity(RestaurantManagerDTO restaurantManagerDTO) {
         Converter<List<UUID>, List<Restaurant>> idListToRestaurantListConverter =
                 ctx -> ctx.getSource()
                         .stream()
@@ -60,6 +51,15 @@ public class RestaurantManagerMapper implements EntityDTOMapper<RestaurantManage
                         })
                         .collect(Collectors.toList());
 
+        modelMapper.createTypeMap(RestaurantManager.class, RestaurantManagerDTO.class)
+                .addMappings(map -> map
+                        .using(restaurantsListToIdsListConverter)
+                        .map(
+                                RestaurantManager::getRestaurants,
+                                RestaurantManagerDTO::setRestaurantIds
+                        )
+                );
+
         modelMapper.createTypeMap(RestaurantManagerDTO.class, RestaurantManager.class)
                 .addMappings(map -> map
                         .using(idListToRestaurantListConverter)
@@ -68,23 +68,14 @@ public class RestaurantManagerMapper implements EntityDTOMapper<RestaurantManage
                                 RestaurantManager::setRestaurants
                         )
                 );
+    }
 
+    public RestaurantManagerDTO mapEntityToDTO(RestaurantManager restaurantManager) {
+        return modelMapper.map(restaurantManager, RestaurantManagerDTO.class);
+    }
+
+    @Override
+    public RestaurantManager mapDTOtoEntity(RestaurantManagerDTO restaurantManagerDTO) {
         return modelMapper.map(restaurantManagerDTO, RestaurantManager.class);
-    }
-
-    @Override
-    public List<RestaurantManagerDTO> mapEntityListToDTOList(List<RestaurantManager> restaurantManagers) {
-        return restaurantManagers
-                .stream()
-                .map(this::mapEntityToDTO)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<RestaurantManager> mapDTOListToEntityList(List<RestaurantManagerDTO> restaurantManagerDTOS) {
-        return restaurantManagerDTOS
-                .stream()
-                .map(this::mapDTOtoEntity)
-                .collect(Collectors.toList());
     }
 }

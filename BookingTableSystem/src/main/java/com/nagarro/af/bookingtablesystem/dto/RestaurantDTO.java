@@ -1,9 +1,11 @@
 package com.nagarro.af.bookingtablesystem.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class RestaurantDTO {
@@ -23,17 +25,20 @@ public class RestaurantDTO {
     private String address;
     @NotBlank(message = "Restaurant's description is mandatory!")
     private String description;
-    private MenuDTO menu;
+    @JsonProperty("menu")
+    private MenuDTO menuDTO;
     @NotNull(message = "Maximum number of customers per day must be set!")
     private Integer maxCustomersNo;
     @NotNull(message = "Maximum number of tables per day must be set!")
     private Integer maxTablesNo;
-    @NotNull(message = "Restaurant manager's id is mandatory!")
+    @JsonProperty("managerId")
     private UUID restaurantManagerId;
 
-    public RestaurantDTO(UUID id, String name, String email, String phoneNo, String country, String city, String address,
-                         String description, MenuDTO menu, Integer maxCustomersNo, Integer maxTablesNo, UUID restaurantManagerId) {
-        this.id = id;
+    public RestaurantDTO() {
+    }
+
+    public RestaurantDTO(String name, String email, String phoneNo, String country, String city, String address,
+                         String description, Integer maxCustomersNo, Integer maxTablesNo) {
         this.name = name;
         this.email = email;
         this.phoneNo = phoneNo;
@@ -41,10 +46,8 @@ public class RestaurantDTO {
         this.city = city;
         this.address = address;
         this.description = description;
-        this.menu = menu;
         this.maxCustomersNo = maxCustomersNo;
         this.maxTablesNo = maxTablesNo;
-        this.restaurantManagerId = restaurantManagerId;
     }
 
     public UUID getId() {
@@ -111,14 +114,6 @@ public class RestaurantDTO {
         this.description = description;
     }
 
-    public MenuDTO getMenu() {
-        return menu;
-    }
-
-    public void setMenu(MenuDTO menu) {
-        this.menu = menu;
-    }
-
     public Integer getMaxCustomersNo() {
         return maxCustomersNo;
     }
@@ -135,11 +130,32 @@ public class RestaurantDTO {
         this.maxTablesNo = maxTablesNo;
     }
 
+    public MenuDTO getMenuDTO() {
+        return menuDTO;
+    }
+
+    public void setMenuDTO(MenuDTO menuDTO) {
+        this.menuDTO = menuDTO;
+    }
+
     public UUID getRestaurantManagerId() {
         return restaurantManagerId;
     }
 
     public void setRestaurantManagerId(UUID restaurantManagerId) {
         this.restaurantManagerId = restaurantManagerId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RestaurantDTO that = (RestaurantDTO) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

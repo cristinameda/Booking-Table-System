@@ -3,6 +3,7 @@ package com.nagarro.af.bookingtablesystem.model;
 import jakarta.persistence.*;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -53,5 +54,18 @@ public class RestaurantCapacity {
 
     public void setCustomersNo(int customersNo) {
         this.customersNo = customersNo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RestaurantCapacity capacity = (RestaurantCapacity) o;
+        return Objects.equals(id, capacity.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

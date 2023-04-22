@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class MenuDTO {
@@ -15,15 +16,14 @@ public class MenuDTO {
     private byte[] content;
     @NotBlank
     private String contentType;
-    @NotNull
-    private UUID restaurantId;
 
-    public MenuDTO(UUID id, String fileName, byte[] content, String contentType, UUID restaurantId) {
-        this.id = id;
+    public MenuDTO() {
+    }
+
+    public MenuDTO(String fileName, byte[] content, String contentType) {
         this.fileName = fileName;
         this.content = content;
         this.contentType = contentType;
-        this.restaurantId = restaurantId;
     }
 
     public UUID getId() {
@@ -58,11 +58,16 @@ public class MenuDTO {
         this.contentType = contentType;
     }
 
-    public UUID getRestaurantId() {
-        return restaurantId;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MenuDTO menuDTO = (MenuDTO) o;
+        return Objects.equals(id, menuDTO.id);
     }
 
-    public void setRestaurantId(UUID restaurantId) {
-        this.restaurantId = restaurantId;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

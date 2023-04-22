@@ -6,6 +6,7 @@ import org.hibernate.annotations.UuidGenerator;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -40,7 +41,7 @@ public class Booking {
         Date bookingDate = getBookingDate();
         restaurant.getDateCapacityAvailability().putIfAbsent(
                 bookingDate,
-                new RestaurantCapacity(UUID.randomUUID(), restaurant.getMaxTablesNo(), restaurant.getMaxCustomersNo())
+                new RestaurantCapacity(restaurant.getMaxTablesNo(), restaurant.getMaxCustomersNo())
         );
     }
 
@@ -98,5 +99,18 @@ public class Booking {
 
     public void setTablesNo(int tablesNo) {
         this.tablesNo = tablesNo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Booking booking = (Booking) o;
+        return Objects.equals(id, booking.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

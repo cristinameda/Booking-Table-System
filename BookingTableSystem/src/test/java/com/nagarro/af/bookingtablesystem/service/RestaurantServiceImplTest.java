@@ -43,6 +43,8 @@ public class RestaurantServiceImplTest {
 
     @Test
     public void testSave_success() {
+        RESTAURANT_TEST.setId(UUID.fromString(TestDataBuilder.RESTAURANT_ID));
+
         when(restaurantMapper.mapDTOtoEntity(RESTAURANT_DTO_TEST)).thenReturn(RESTAURANT_TEST);
         when(restaurantRepository.save(RESTAURANT_TEST)).thenReturn(RESTAURANT_TEST);
         when(restaurantMapper.mapEntityToDTO(RESTAURANT_TEST)).thenReturn(RESTAURANT_DTO_TEST);

@@ -2,34 +2,17 @@ package com.nagarro.af.bookingtablesystem.repository;
 
 import com.nagarro.af.bookingtablesystem.model.Menu;
 import com.nagarro.af.bookingtablesystem.model.Restaurant;
-import com.nagarro.af.bookingtablesystem.utils.PostgresDbContainer;
 import com.nagarro.af.bookingtablesystem.utils.TestDataBuilder;
-import jakarta.transaction.Transactional;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@Sql({"classpath:scripts/insert_restaurant_managers.sql", "classpath:scripts/insert_restaurants.sql"})
-@Testcontainers
-@Transactional
-public class ITRestaurantRepository {
-
-    @Container
-    public static PostgreSQLContainer<PostgresDbContainer> postgreSQLContainer = PostgresDbContainer.getInstance();
+public class ITRestaurantRepository extends ITBaseRepository {
 
     @Autowired
     private RestaurantRepository restaurantRepository;
@@ -38,14 +21,8 @@ public class ITRestaurantRepository {
     private MenuRepository menuRepository;
 
     @Test
-    void contextLoads() {
-    }
-
-    @Test
-    public void testSave_OneToOneRelationship() {
-        Restaurant restaurant = TestDataBuilder.buildRestaurant();
-        Menu menu = TestDataBuilder.buildMenu(restaurant);
-        restaurant.setMenu(menu);
+    public void testSave_OneToOneRelationship_Menu() {
+        Restaurant restaurant = buildRestaurantWithMenu();
 
         Restaurant returnedRestaurant = restaurantRepository.save(restaurant);
 
@@ -54,8 +31,22 @@ public class ITRestaurantRepository {
     }
 
     @Test
+    public void testDelete_OneToOneRelationship_Menu() {
+        Restaurant restaurant = buildRestaurantWithMenu();
+
+        Restaurant returnedRestaurant = restaurantRepository.saveAndFlush(restaurant);
+
+        restaurantRepository.delete(returnedRestaurant);
+        assertTrue(restaurantRepository.findById(returnedRestaurant.getId()).isEmpty());
+        assertTrue(menuRepository.findById(returnedRestaurant.getId()).isEmpty());
+    }
+
+    @Test
     public void testFindByName_success() {
-        Optional<Restaurant> restaurantOptional = restaurantRepository.findByName("Meat Up");
+        Restaurant restaurant = saveNewRestaurant();
+        assertTrue(restaurantRepository.findById(restaurant.getId()).isPresent());
+
+        Optional<Restaurant> restaurantOptional = restaurantRepository.findByName(restaurant.getName());
         assertTrue(restaurantOptional.isPresent());
     }
 
@@ -67,8 +58,29 @@ public class ITRestaurantRepository {
 
     @Test
     public void testFindAllByCountryAndCity_success() {
-        List<Restaurant> restaurants = restaurantRepository.findAllByCountryAndCity("Romania", "Cluj-Napoca");
+        Restaurant restaurantOne = saveNewRestaurant();
+
+        String country = restaurantOne.getCountry();
+        String city = restaurantOne.getCity();
+
+        Restaurant restaurantTwo = restaurantRepository.saveAndFlush(
+                new Restaurant(
+                        "Soho",
+                        "soho@yahoo.com",
+                        "+40789251667",
+                        country,
+                        city,
+                        "Best american food in town!",
+                        "str. Copacei 34",
+                        null,
+                        100,
+                        30)
+        );
+
+        List<Restaurant> restaurants = restaurantRepository.findAllByCountryAndCity(country, city);
         assertFalse(restaurants.isEmpty());
+        assertEquals(restaurantOne, restaurants.get(0));
+        assertEquals(restaurantTwo, restaurants.get(1));
     }
 
     @Test
@@ -77,4 +89,16 @@ public class ITRestaurantRepository {
         assertTrue(restaurants.isEmpty());
     }
 
+    @NotNull
+    private Restaurant buildRestaurantWithMenu() {
+        Restaurant restaurant = TestDataBuilder.buildRestaurant();
+        Menu menu = TestDataBuilder.buildMenu(restaurant);
+        restaurant.setMenu(menu);
+        return restaurant;
+    }
+
+    @NotNull
+    private Restaurant saveNewRestaurant() {
+        return restaurantRepository.saveAndFlush(TestDataBuilder.buildRestaurant());
+    }
 }

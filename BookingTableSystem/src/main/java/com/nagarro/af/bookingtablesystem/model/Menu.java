@@ -2,6 +2,7 @@ package com.nagarro.af.bookingtablesystem.model;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -28,7 +29,7 @@ public class Menu {
         this.fileName = fileName;
         this.content = content;
         this.contentType = contentType;
-        this.restaurant = restaurant;
+        this.setRestaurant(restaurant);
     }
 
     public UUID getId() {
@@ -69,5 +70,27 @@ public class Menu {
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
+        this.restaurant.setMenu(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Menu menu = (Menu) o;
+        return Objects.equals(id, menu.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Menu{" +
+                "id=" + id +
+                ", fileName='" + fileName + '\'' +
+                ", contentType='" + contentType + '\'';
     }
 }
