@@ -16,5 +16,7 @@ public interface BookingService {
 
     List<BookingDTO> findAllByRestaurantId(UUID id);
 
+    List<BookingDTO> findAllByRestaurantName(String name);
+
     void delete(UUID id);
 }

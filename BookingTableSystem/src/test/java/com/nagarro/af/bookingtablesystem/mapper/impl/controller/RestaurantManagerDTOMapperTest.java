@@ -5,6 +5,7 @@ import com.nagarro.af.bookingtablesystem.controller.response.UserResponse;
 import com.nagarro.af.bookingtablesystem.dto.RestaurantManagerDTO;
 import com.nagarro.af.bookingtablesystem.utils.TestComparators;
 import com.nagarro.af.bookingtablesystem.utils.TestDataBuilder;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,7 +28,7 @@ public class RestaurantManagerDTOMapperTest {
 
     @Test
     public void whenGivenRestaurantManagerDTO_thenReturnResponseWithSameFieldValues() {
-        RestaurantManagerDTO managerDTO = TestDataBuilder.buildRestaurantManagerDTO();
+        RestaurantManagerDTO managerDTO = buildRestaurantManagerDTO();
         RestaurantManagerResponse managerResponse = TestDataBuilder.buildRestaurantManagerResponse();
 
         RestaurantManagerResponse mappedManagerDTO = restaurantManagerDTOMapper.mapDTOToResponse(managerDTO);
@@ -37,7 +39,7 @@ public class RestaurantManagerDTOMapperTest {
 
     @Test
     public void whenGivenRestaurantManagerDTOWithNullValues_thenReturnResponseWithSameFieldValues() {
-        RestaurantManagerDTO managerDTO = TestDataBuilder.buildRestaurantManagerDTO();
+        RestaurantManagerDTO managerDTO = buildRestaurantManagerDTO();
         managerDTO.setCountry(null);
         managerDTO.setCity(null);
         RestaurantManagerResponse managerResponse = TestDataBuilder.buildRestaurantManagerResponse();
@@ -62,7 +64,7 @@ public class RestaurantManagerDTOMapperTest {
 
     @Test
     public void whenGivenRestaurantManagerDTOList_thenReturnResponseListWithSameFieldValues() {
-        RestaurantManagerDTO managerDTO = TestDataBuilder.buildRestaurantManagerDTO();
+        RestaurantManagerDTO managerDTO = buildRestaurantManagerDTO();
         List<RestaurantManagerDTO> managerDTOList = new ArrayList<>();
         managerDTOList.add(managerDTO);
 
@@ -82,5 +84,12 @@ public class RestaurantManagerDTOMapperTest {
 
         assertNotNull(mappedManagerDTOList);
         assertTrue(mappedManagerDTOList.isEmpty());
+    }
+
+    @NotNull
+    private RestaurantManagerDTO buildRestaurantManagerDTO() {
+        RestaurantManagerDTO managerDTO = TestDataBuilder.buildRestaurantManagerDTO();
+        managerDTO.setId(UUID.fromString(TestDataBuilder.RESTAURANT_MANAGER_ID));
+        return managerDTO;
     }
 }

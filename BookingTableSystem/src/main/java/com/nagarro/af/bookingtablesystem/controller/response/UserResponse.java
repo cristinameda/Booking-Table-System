@@ -3,6 +3,7 @@ package com.nagarro.af.bookingtablesystem.controller.response;
 import java.util.Objects;
 
 public class UserResponse {
+    private String id;
     private String username;
     private String fullName;
     private String email;
@@ -13,7 +14,8 @@ public class UserResponse {
     public UserResponse() {
     }
 
-    public UserResponse(String username, String fullName, String email, String phoneNo, String country, String city) {
+    public UserResponse(String id, String username, String fullName, String email, String phoneNo, String country, String city) {
+        this.id = id;
         this.username = username;
         this.fullName = fullName;
         this.email = email;
@@ -70,18 +72,26 @@ public class UserResponse {
         this.city = city;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserResponse that = (UserResponse) o;
-        return Objects.equals(username, that.username) && Objects.equals(fullName, that.fullName) &&
-                Objects.equals(email, that.email) && Objects.equals(phoneNo, that.phoneNo) &&
-                Objects.equals(country, that.country) && Objects.equals(city, that.city);
+        return Objects.equals(id, that.id) && Objects.equals(username, that.username) && Objects.equals(fullName, that.fullName) &&
+                Objects.equals(email, that.email) && Objects.equals(phoneNo, that.phoneNo) && Objects.equals(country, that.country) &&
+                Objects.equals(city, that.city);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, fullName, email, phoneNo, country, city);
+        return Objects.hash(id, username, fullName, email, phoneNo, country, city);
     }
 }

@@ -16,10 +16,10 @@ public class Booking {
     @GeneratedValue
     @UuidGenerator
     private UUID id;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
     @Column(name = "date_hour", columnDefinition = "TIMESTAMP", nullable = false)

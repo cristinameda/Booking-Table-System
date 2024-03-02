@@ -9,11 +9,17 @@ import java.util.UUID;
 public interface RestaurantService {
     RestaurantDTO save(RestaurantDTO restaurantDTO);
 
+    RestaurantDTO update(RestaurantDTO restaurantDTO);
+
     RestaurantDTO findById(UUID id);
 
     RestaurantDTO findByName(String name);
 
+    RestaurantDTO findByEmail(String email);
+
     List<RestaurantDTO> findAll();
+
+    List<RestaurantDTO> findAllByRestaurantManagerId(UUID id);
 
     List<RestaurantDTO> findAllByCountryAndCity(String country, String city);
 
@@ -22,4 +28,10 @@ public interface RestaurantService {
     void assignRestaurantManager(UUID restaurantId, UUID managerId);
 
     void uploadMenu(UUID restaurantId, MultipartFile menuFile);
+
+    void addToFavourite(UUID restaurantId, UUID customerId);
+
+    void removeFromFavourites(UUID restaurantId, UUID customerId);
+
+    List<RestaurantDTO> getFavouriteRestaurants(UUID customerId);
 }

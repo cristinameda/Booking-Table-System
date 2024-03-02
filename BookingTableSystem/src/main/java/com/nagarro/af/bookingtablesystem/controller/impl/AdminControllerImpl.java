@@ -7,12 +7,14 @@ import com.nagarro.af.bookingtablesystem.mapper.impl.controller.AdminDTOMapper;
 import com.nagarro.af.bookingtablesystem.service.AdminService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200", exposedHeaders = {"Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"}, allowCredentials = "true")
 public class AdminControllerImpl implements AdminController {
 
     private final AdminService adminService;
@@ -30,6 +32,11 @@ public class AdminControllerImpl implements AdminController {
     }
 
     @Override
+    public ResponseEntity<AdminResponse> update(AdminDTO adminDTO) {
+        return new ResponseEntity<>(mapToAdminResponse(adminService.update(adminDTO)), HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<AdminResponse> findById(UUID id) {
         return new ResponseEntity<>(mapToAdminResponse(adminService.findById(id)), HttpStatus.OK);
     }
@@ -37,6 +44,11 @@ public class AdminControllerImpl implements AdminController {
     @Override
     public ResponseEntity<List<AdminResponse>> findAll() {
         return new ResponseEntity<>(mapToAdminResponseList(adminService.findAll()), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<AdminResponse>> findAllByFullName(String name) {
+        return new ResponseEntity<>(mapToAdminResponseList(adminService.findAllByFullName(name)), HttpStatus.OK);
     }
 
     @Override

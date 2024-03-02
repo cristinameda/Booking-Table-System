@@ -29,6 +29,19 @@ public interface RestaurantController {
     })
     ResponseEntity<RestaurantDTO> save(@Valid @RequestBody RestaurantDTO restaurantDTO);
 
+    @PutMapping(
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ApiOperation(value = "Updates an existing restaurant.",
+            response = RestaurantDTO.class,
+            notes = "Return the updated restaurant.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Restaurant successfully updated!"),
+            @ApiResponse(code = 400, message = "Bad request!")
+    })
+    ResponseEntity<RestaurantDTO> update(@Valid @RequestBody RestaurantDTO restaurantDTO);
+
     @GetMapping(
             path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -64,6 +77,17 @@ public interface RestaurantController {
             @ApiResponse(code = 200, message = "Restaurants returned!")
     })
     ResponseEntity<List<RestaurantDTO>> findAll();
+
+    @GetMapping(
+            path = "/manager/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ApiOperation(value = "Find all restaurants managed by a manager.",
+            notes = "Return all the saved restaurants managed by that manager.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Restaurants returned!")
+    })
+    ResponseEntity<List<RestaurantDTO>> findAllByRestaurantManagerId(@PathVariable UUID id);
 
     @GetMapping(
             path = "/country/{country}/city/{city}",
@@ -105,5 +129,36 @@ public interface RestaurantController {
     })
     ResponseEntity<Void> uploadMenu(@PathVariable("restaurant_id") UUID restaurantId,
                                     @RequestPart(name = "menu", required = false) MultipartFile menu);
+
+    @PostMapping(
+            path = "/customer/{customerId}/add-favourites/{restaurantId}"
+    )
+    @ApiOperation(value = "Add a restaurant to a customer's favourites list.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Restaurant successfully added to favourites!"),
+            @ApiResponse(code = 400, message = "Bad request!")
+    })
+    ResponseEntity<Void> addToFavourite(@PathVariable UUID restaurantId, @PathVariable UUID customerId);
+
+    @DeleteMapping(
+            path = "/customer/{customerId}/remove-favourites/{restaurantId}"
+    )
+    @ApiOperation(value = "Delete a restaurant to a customer's favourites list.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Restaurant successfully deleted from the favourites list!"),
+            @ApiResponse(code = 400, message = "Bad request!")
+    })
+    ResponseEntity<Void> removeFromFavourites(@PathVariable UUID restaurantId, @PathVariable UUID customerId);
+
+    @GetMapping(
+            path = "/customer/{customerId}/favourites",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ApiOperation(value = "Get the list of customer's favourite restaurants.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Favourite restaurants list returned!"),
+            @ApiResponse(code = 400, message = "Bad request!")
+    })
+    ResponseEntity<List<RestaurantDTO>> getFavouriteRestaurants(@PathVariable UUID customerId);
 
 }

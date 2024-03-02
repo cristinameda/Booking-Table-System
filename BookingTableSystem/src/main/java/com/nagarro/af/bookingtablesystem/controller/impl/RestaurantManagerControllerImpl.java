@@ -7,12 +7,14 @@ import com.nagarro.af.bookingtablesystem.mapper.impl.controller.RestaurantManage
 import com.nagarro.af.bookingtablesystem.service.RestaurantManagerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200", exposedHeaders = {"Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"}, allowCredentials = "true")
 public class RestaurantManagerControllerImpl implements RestaurantManagerController {
 
     private final RestaurantManagerService restaurantManagerService;
@@ -30,6 +32,11 @@ public class RestaurantManagerControllerImpl implements RestaurantManagerControl
     }
 
     @Override
+    public ResponseEntity<RestaurantManagerResponse> update(RestaurantManagerDTO managerDTO) {
+        return new ResponseEntity<>(mapToRestaurantManagerResponse(restaurantManagerService.update(managerDTO)), HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<RestaurantManagerResponse> findById(UUID id) {
         return new ResponseEntity<>(mapToRestaurantManagerResponse(restaurantManagerService.findById(id)), HttpStatus.OK);
     }
@@ -37,6 +44,11 @@ public class RestaurantManagerControllerImpl implements RestaurantManagerControl
     @Override
     public ResponseEntity<List<RestaurantManagerResponse>> findAll() {
         return new ResponseEntity<>(mapToRestaurantManagerResponseList(restaurantManagerService.findAll()), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<RestaurantManagerResponse>> findAllByFullName(String name) {
+        return new ResponseEntity<>(mapToRestaurantManagerResponseList(restaurantManagerService.findAllByFullName(name)), HttpStatus.OK);
     }
 
     @Override

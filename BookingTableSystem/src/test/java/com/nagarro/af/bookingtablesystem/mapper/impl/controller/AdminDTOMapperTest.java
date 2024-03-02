@@ -5,6 +5,7 @@ import com.nagarro.af.bookingtablesystem.controller.response.UserResponse;
 import com.nagarro.af.bookingtablesystem.dto.AdminDTO;
 import com.nagarro.af.bookingtablesystem.utils.TestComparators;
 import com.nagarro.af.bookingtablesystem.utils.TestDataBuilder;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,7 +28,7 @@ public class AdminDTOMapperTest {
 
     @Test
     public void whenGivenAdminDTO_thenReturnResponseWithSameFieldValues() {
-        AdminDTO adminDTO = TestDataBuilder.buildAdminDTO();
+        AdminDTO adminDTO = buildAdminDTO();
         AdminResponse adminResponse = TestDataBuilder.buildAdminResponse();
 
         AdminResponse mappedAdminDTO = adminDTOMapper.mapDTOToResponse(adminDTO);
@@ -37,7 +39,7 @@ public class AdminDTOMapperTest {
 
     @Test
     public void whenGivenAdminDTOWithNullValues_thenReturnResponseWithSameFieldValues() {
-        AdminDTO adminDTO = TestDataBuilder.buildAdminDTO();
+        AdminDTO adminDTO = buildAdminDTO();
         adminDTO.setCountry(null);
         adminDTO.setCity(null);
         AdminResponse adminResponse = TestDataBuilder.buildAdminResponse();
@@ -62,7 +64,7 @@ public class AdminDTOMapperTest {
 
     @Test
     public void whenGivenAdminDTOList_thenReturnResponseListWithSameFieldValues() {
-        AdminDTO adminDTO = TestDataBuilder.buildAdminDTO();
+        AdminDTO adminDTO = buildAdminDTO();
         List<AdminDTO> adminDTOList = new ArrayList<>();
         adminDTOList.add(adminDTO);
 
@@ -82,5 +84,12 @@ public class AdminDTOMapperTest {
 
         assertNotNull(mappedAdminDTOList);
         assertTrue(mappedAdminDTOList.isEmpty());
+    }
+
+    @NotNull
+    private AdminDTO buildAdminDTO() {
+        AdminDTO adminDTO = TestDataBuilder.buildAdminDTO();
+        adminDTO.setId(UUID.fromString(TestDataBuilder.ADMIN_ID));
+        return adminDTO;
     }
 }

@@ -74,7 +74,8 @@ public class TestComparators {
             .thenComparing(BookingDTO::getCustomersNo)
             .thenComparing(BookingDTO::getTablesNo);
 
-    public static final Comparator<UserResponse> USER_RESPONSE_COMPARATOR = Comparator.comparing(UserResponse::getUsername)
+    public static final Comparator<UserResponse> USER_RESPONSE_COMPARATOR = Comparator.comparing(UserResponse::getId)
+            .thenComparing(UserResponse::getUsername)
             .thenComparing(UserResponse::getEmail)
             .thenComparing(UserResponse::getFullName)
             .thenComparing(UserResponse::getPhoneNo)

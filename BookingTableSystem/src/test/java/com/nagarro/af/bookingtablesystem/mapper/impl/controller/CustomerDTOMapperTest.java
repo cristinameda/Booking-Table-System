@@ -5,6 +5,7 @@ import com.nagarro.af.bookingtablesystem.controller.response.UserResponse;
 import com.nagarro.af.bookingtablesystem.dto.CustomerDTO;
 import com.nagarro.af.bookingtablesystem.utils.TestComparators;
 import com.nagarro.af.bookingtablesystem.utils.TestDataBuilder;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,7 +28,7 @@ public class CustomerDTOMapperTest {
 
     @Test
     public void whenGivenCustomerDTO_thenReturnResponseWithSameFieldValues() {
-        CustomerDTO customerDTO = TestDataBuilder.buildCustomerDTO();
+        CustomerDTO customerDTO = buildCustomerDTO();
         CustomerResponse customerResponse = TestDataBuilder.buildCustomerResponse();
 
         CustomerResponse mappedCustomerDTO = customerDTOMapper.mapDTOToResponse(customerDTO);
@@ -37,7 +39,7 @@ public class CustomerDTOMapperTest {
 
     @Test
     public void whenGivenCustomerDTOWithNullValues_thenReturnResponseWithSameFieldValues() {
-        CustomerDTO customerDTO = TestDataBuilder.buildCustomerDTO();
+        CustomerDTO customerDTO = buildCustomerDTO();
         customerDTO.setCountry(null);
         customerDTO.setCity(null);
         CustomerResponse customerResponse = TestDataBuilder.buildCustomerResponse();
@@ -62,7 +64,7 @@ public class CustomerDTOMapperTest {
 
     @Test
     public void whenGivenCustomerDTOList_thenReturnResponseListWithSameFieldValues() {
-        CustomerDTO customerDTO = TestDataBuilder.buildCustomerDTO();
+        CustomerDTO customerDTO = buildCustomerDTO();
         List<CustomerDTO> customerDTOList = new ArrayList<>();
         customerDTOList.add(customerDTO);
 
@@ -82,5 +84,12 @@ public class CustomerDTOMapperTest {
 
         assertNotNull(mappedCustomerDTOList);
         assertTrue(mappedCustomerDTOList.isEmpty());
+    }
+
+    @NotNull
+    private CustomerDTO buildCustomerDTO() {
+        CustomerDTO customerDTO = TestDataBuilder.buildCustomerDTO();
+        customerDTO.setId(UUID.fromString(TestDataBuilder.CUSTOMER_ID));
+        return customerDTO;
     }
 }

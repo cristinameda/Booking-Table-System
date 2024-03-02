@@ -15,7 +15,7 @@ public class Restaurant {
     private UUID id;
     @Column(nullable = false)
     private String name;
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String email;
     @Column(name = "phone_no", nullable = false)
     private String phoneNo;

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<CustomerDTO id="64b7aa16-0b9f-4177-bfda-30af651db04d" xmlns="urn:eventis:crm:2.0">
+    <username>customer</username>
+    <fullName>Customer</fullName>
+    <email>customer@gmail.com</email>
+    <phoneNo>+40752187123</phoneNo>
+    <country>Romania</country>
+    <city>Cluj</city>
+</CustomerDTO>
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<CustomerDTO id="1df497e4-3796-4002-9e01-80ca41632c21" xmlns="urn:eventis:crm:2.0">
+    <username>customer1</username>
+    <fullName>Customer1</fullName>
+    <email>customer1@gmail.com</email>
+    <phoneNo>+40752987123</phoneNo>
+    <country>Romania</country>
+    <city>Cluj</city>
+</CustomerDTO>
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<CustomerDTO id="2ac8abec-8c9a-40e6-ae7a-e494ff3689c0" xmlns="urn:eventis:crm:2.0">
+    <username>tomass</username>
+    <fullName>Tomas</fullName>
+    <email>tomas@yahoo.com</email>
+    <phoneNo>+40747923590</phoneNo>
+    <country>Romania</country>
+    <city>Cluj-Napoca</city>
+</CustomerDTO>
+

@@ -1,17 +1,21 @@
 package com.nagarro.af.bookingtablesystem.controller.authentication.request;
 
-import jakarta.validation.constraints.NotNull;
+import com.nagarro.af.bookingtablesystem.annotation.UniqueEmail;
+import com.nagarro.af.bookingtablesystem.annotation.UniqueUsername;
+import jakarta.validation.constraints.NotEmpty;
 
 public class RegisterRequest {
-    @NotNull
+    @NotEmpty(message = "Full name is mandatory!")
     private String fullName;
-    @NotNull
+    @NotEmpty(message = "Email is mandatory!")
+    @UniqueEmail
     private String email;
-    @NotNull
+    @NotEmpty(message = "Username is mandatory!")
+    @UniqueUsername
     private String username;
-    @NotNull
+    @NotEmpty(message = "Password is mandatory!")
     private String password;
-    @NotNull
+    @NotEmpty(message = "Role is mandatory!")
     private String role;
     private String phoneNo;
     private String country;

@@ -2,7 +2,7 @@ package com.nagarro.af.bookingtablesystem.service;
 
 import com.nagarro.af.bookingtablesystem.dto.RestaurantDTO;
 import com.nagarro.af.bookingtablesystem.exception.NotFoundException;
-import com.nagarro.af.bookingtablesystem.mapper.impl.RestaurantMapper;
+import com.nagarro.af.bookingtablesystem.mapper.impl.service.RestaurantMapper;
 import com.nagarro.af.bookingtablesystem.model.Restaurant;
 import com.nagarro.af.bookingtablesystem.repository.RestaurantRepository;
 import com.nagarro.af.bookingtablesystem.service.impl.RestaurantServiceImpl;

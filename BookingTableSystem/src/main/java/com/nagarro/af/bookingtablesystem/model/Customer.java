@@ -1,9 +1,6 @@
 package com.nagarro.af.bookingtablesystem.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,8 +14,10 @@ import java.util.List;
 public class Customer extends User implements UserDetails {
     private static final String ROLE = "ROLE_CUSTOMER";
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Booking> bookings = new ArrayList<>();
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Restaurant> faveRestaurants = new ArrayList<>();
 
     public Customer() {
 
@@ -32,12 +31,20 @@ public class Customer extends User implements UserDetails {
         return bookings;
     }
 
-    public void setBookings(List<Booking> bookings) {
-        this.bookings = bookings;
-    }
-
     public void addBooking(Booking booking) {
         bookings.add(booking);
+    }
+
+    public void addToFavourites(Restaurant restaurant) {
+        this.faveRestaurants.add(restaurant);
+    }
+
+    public void removeFromFavourites(Restaurant restaurant) {
+        this.faveRestaurants.remove(restaurant);
+    }
+
+    public List<Restaurant> getFaveRestaurants() {
+        return this.faveRestaurants;
     }
 
     @Override

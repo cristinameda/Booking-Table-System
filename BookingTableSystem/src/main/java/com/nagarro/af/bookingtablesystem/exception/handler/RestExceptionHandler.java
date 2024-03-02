@@ -2,12 +2,12 @@ package com.nagarro.af.bookingtablesystem.exception.handler;
 
 import com.nagarro.af.bookingtablesystem.exception.CorruptedFileException;
 import com.nagarro.af.bookingtablesystem.exception.NotFoundException;
+import com.nagarro.af.bookingtablesystem.exception.NotUniqueException;
 import jakarta.annotation.Nullable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNull;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -29,9 +29,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     @Nullable
     public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                               @NonNull HttpHeaders headers,
-                                                               @NonNull HttpStatusCode status,
-                                                               @NonNull WebRequest request) {
+                                                               HttpHeaders headers,
+                                                               HttpStatusCode status,
+                                                               WebRequest request) {
         ApiException apiException = new ApiException(HttpStatus.BAD_REQUEST);
         ex.getBindingResult().getFieldErrors().forEach((error) -> insertErrorMessages(apiException, error));
 
@@ -60,6 +60,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(CorruptedFileException.class)
     public ResponseEntity<ApiException> handleCorruptedFileException(CorruptedFileException ex) {
         ApiException apiException = new ApiException(HttpStatus.UNSUPPORTED_MEDIA_TYPE, ex.getMessage());
+        return new ResponseEntity<>(apiException, apiException.getStatus());
+    }
+
+    @ExceptionHandler(NotUniqueException.class)
+    public ResponseEntity<ApiException> handleNotUniqueException(NotUniqueException ex) {
+        ApiException apiException = new ApiException(HttpStatus.BAD_REQUEST, ex.getMessage());
         return new ResponseEntity<>(apiException, apiException.getStatus());
     }
 }

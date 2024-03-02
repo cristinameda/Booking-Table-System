@@ -1,7 +1,11 @@
 package com.nagarro.af.bookingtablesystem.controller.authentication.request;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class AuthenticationRequest {
+    @NotBlank(message = "Username is mandatory!")
     private String username;
+    @NotBlank(message = "Password is mandatory!")
     private String password;
 
     public AuthenticationRequest() {

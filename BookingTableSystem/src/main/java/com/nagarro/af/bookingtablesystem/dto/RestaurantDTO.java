@@ -1,6 +1,8 @@
 package com.nagarro.af.bookingtablesystem.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.nagarro.af.bookingtablesystem.annotation.UniqueEmail;
+import com.nagarro.af.bookingtablesystem.model.SaveGroup;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
@@ -14,6 +16,7 @@ public class RestaurantDTO {
     @NotBlank(message = "Restaurant's name is mandatory!")
     private String name;
     @NotBlank(message = "Restaurant's email is mandatory!")
+    @UniqueEmail(groups = SaveGroup.class)
     private String email;
     @NotBlank(message = "Restaurant's phone number is mandatory!")
     private String phoneNo;

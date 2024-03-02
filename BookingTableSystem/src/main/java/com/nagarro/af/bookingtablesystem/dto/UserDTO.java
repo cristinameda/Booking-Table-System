@@ -1,30 +1,44 @@
 package com.nagarro.af.bookingtablesystem.dto;
 
 import com.nagarro.af.bookingtablesystem.annotation.UniqueEmail;
+import com.nagarro.af.bookingtablesystem.annotation.UniqueUsername;
+import com.nagarro.af.bookingtablesystem.model.SaveGroup;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.xml.bind.annotation.*;
 import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
 import java.util.UUID;
 
+@XmlRootElement(name = "UserDTO", namespace = "urn:eventis:crm:2.0")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class UserDTO {
     @Id
+    @XmlAttribute(name = "id")
     private UUID id;
     @NotBlank(message = "Username is mandatory!")
+    @UniqueUsername(groups = {SaveGroup.class})
+    @XmlElement(name = "username", namespace = "urn:eventis:crm:2.0")
     private String username;
-    @NotBlank(message = "Password is mandatory!")
+    @NotBlank(message = "Password is mandatory!", groups = {SaveGroup.class})
+    @XmlElement(name = "password", namespace = "urn:eventis:crm:2.0")
     private String password;
     @NotBlank(message = "Name is mandatory!")
+    @XmlElement(name = "fullName", namespace = "urn:eventis:crm:2.0")
     private String fullName;
     @Email
-    @UniqueEmail(message = "This email is already taken!")
+    @UniqueEmail(message = "This email is already taken!", groups = {SaveGroup.class})
+    @XmlElement(name = "email", namespace = "urn:eventis:crm:2.0")
     private String email;
     @NotBlank(message = "Phone number is mandatory!")
     @Pattern(regexp = "(([+]|[0][0])*[0-9]){10,15}", message = "Phone number is invalid!")
+    @XmlElement(name = "phoneNo", namespace = "urn:eventis:crm:2.0")
     private String phoneNo;
+    @XmlElement(name = "country", namespace = "urn:eventis:crm:2.0")
     private String country;
+    @XmlElement(name = "city", namespace = "urn:eventis:crm:2.0")
     private String city;
 
     public UserDTO() {

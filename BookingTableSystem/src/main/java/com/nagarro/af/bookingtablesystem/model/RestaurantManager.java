@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "restaurant_managers")
 public class RestaurantManager extends User implements UserDetails {
-    private static final String ROLE = "ROLE_RESTAURANT_MANAGER";
+    private static final String ROLE = "ROLE_MANAGER";
 
     @OneToMany(mappedBy = "restaurantManager")
     private List<Restaurant> restaurants = new ArrayList<>();

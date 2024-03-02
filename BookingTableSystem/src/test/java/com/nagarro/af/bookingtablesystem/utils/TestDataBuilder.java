@@ -107,6 +107,7 @@ public class TestDataBuilder {
 
     public static AdminResponse buildAdminResponse() {
         return new AdminResponse(
+                ADMIN_ID,
                 "adminone",
                 "Admin One",
                 "admin_one@yahoo.com",
@@ -142,6 +143,7 @@ public class TestDataBuilder {
 
     public static CustomerResponse buildCustomerResponse() {
         return new CustomerResponse(
+                CUSTOMER_ID,
                 "customerone",
                 "Customer One",
                 "customer_one@yahoo.com",
@@ -177,6 +179,7 @@ public class TestDataBuilder {
 
     public static RestaurantManagerResponse buildRestaurantManagerResponse() {
         return new RestaurantManagerResponse(
+                RESTAURANT_MANAGER_ID,
                 "manager-garlic",
                 "Manager Garlic",
                 "manager_garlic@yahoo.com",

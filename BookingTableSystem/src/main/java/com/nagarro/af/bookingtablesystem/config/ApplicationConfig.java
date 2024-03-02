@@ -1,6 +1,7 @@
 package com.nagarro.af.bookingtablesystem.config;
 
 import com.nagarro.af.bookingtablesystem.exception.NotFoundException;
+import com.nagarro.af.bookingtablesystem.handler.TradeWebSocketHandler;
 import com.nagarro.af.bookingtablesystem.model.Admin;
 import com.nagarro.af.bookingtablesystem.model.Customer;
 import com.nagarro.af.bookingtablesystem.model.RestaurantManager;
@@ -18,11 +19,18 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.socket.WebSocketHandler;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
+import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
 import java.util.Optional;
 
 @Configuration
-public class ApplicationConfig {
+@EnableWebSocket
+@EnableWebMvc
+public class ApplicationConfig implements WebSocketConfigurer {
 
     private final AdminRepository adminRepository;
 
@@ -82,5 +90,15 @@ public class ApplicationConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+        registry.addHandler(tradeWebSocketHandler(), "/logged-users").setAllowedOrigins("*");
+    }
+
+    @Bean
+    public WebSocketHandler tradeWebSocketHandler() {
+        return new TradeWebSocketHandler();
     }
 }

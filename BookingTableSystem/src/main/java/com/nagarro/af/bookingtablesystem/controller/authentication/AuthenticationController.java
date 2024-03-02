@@ -14,6 +14,6 @@ public interface AuthenticationController {
     @PostMapping(path = "/register")
     ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request);
 
-    @PostMapping(path = "/authenticate")
-    ResponseEntity<AuthenticationResponse> register(@RequestBody AuthenticationRequest request);
+    @PostMapping(path = "/login")
+    ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request);
 }

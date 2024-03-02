@@ -52,7 +52,7 @@ public interface BookingController {
     ResponseEntity<List<BookingDTO>> findAll();
 
     @GetMapping(
-            path = "/customer",
+            path = "/customer/{customerId}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(value = "Find all bookings made by a customer.",
@@ -60,18 +60,29 @@ public interface BookingController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Bookings returned!")
     })
-    ResponseEntity<List<BookingDTO>> findAllByCustomerId(@RequestParam("id") UUID customerId);
+    ResponseEntity<List<BookingDTO>> findAllByCustomerId(@PathVariable UUID customerId);
 
     @GetMapping(
-            path = "/restaurant",
+            path = "/restaurant/{restaurantId}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @ApiOperation(value = "Find all bookings for a specific restaurant.",
+    @ApiOperation(value = "Find all bookings for a specific restaurant id.",
             notes = "Return all the reservations made for that restaurant.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Bookings returned!")
     })
-    ResponseEntity<List<BookingDTO>> findAllByRestaurantId(@RequestParam("id") UUID restaurantId);
+    ResponseEntity<List<BookingDTO>> findAllByRestaurantId(@PathVariable UUID restaurantId);
+
+    @GetMapping(
+            path = "/restaurant/name/{name}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ApiOperation(value = "Find all bookings for a specific restaurant name.",
+            notes = "Return all the reservations made for that restaurant.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Bookings returned!")
+    })
+    ResponseEntity<List<BookingDTO>> findAllByRestaurantName(@PathVariable String name);
 
     @DeleteMapping(path = "/{id}")
     @ApiOperation(value = "Delete an existing booking by id.")

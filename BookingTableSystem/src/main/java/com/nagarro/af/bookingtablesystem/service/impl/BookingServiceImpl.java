@@ -82,11 +82,19 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public List<BookingDTO> findAllByRestaurantName(String name) {
+        restaurantService.findByName(name);
+        List<Booking> bookings = bookingRepository.findAllByRestaurantName(name);
+        return bookingMapper.mapEntityListToDTOList(bookings);
+    }
+
+    @Override
     public void delete(UUID id) {
         BookingDTO bookingDTO = findById(id);
         Booking booking = bookingMapper.mapDTOtoEntity(bookingDTO);
+        bookingRepository.deleteById(id);
+        bookingRepository.flush();
         restoreCapacity(booking);
-        bookingRepository.delete(booking);
     }
 
     private void restoreCapacity(Booking booking) {

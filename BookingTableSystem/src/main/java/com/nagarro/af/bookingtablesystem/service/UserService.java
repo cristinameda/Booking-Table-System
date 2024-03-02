@@ -8,6 +8,8 @@ import java.util.UUID;
 public interface UserService<T extends UserDTO> {
     T save(T t);
 
+    T update(T t);
+
     T findById(UUID id);
 
     T findByEmail(String email);
@@ -15,6 +17,8 @@ public interface UserService<T extends UserDTO> {
     T findByUsername(String username);
 
     List<T> findAll();
+
+    List<T> findAllByFullName(String name);
 
     void delete(UUID id);
 }
